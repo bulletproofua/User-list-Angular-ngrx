@@ -48,8 +48,4 @@ export class UsersCollectionEffects {
       this.Router.navigateByUrl(`users/${userId}`);
     })
   );
-
-  @Effect()
-  init$: Observable<Action> = defer(() => of(new LoadUsersAction()));
-
 }

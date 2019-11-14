@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 // ngrx
 import * as fromUserCollection from '../../ngrx/reducers/index';
-import { SelectUserAction } from '../../ngrx/actions/users-collection.actions';
+import { SelectUserAction, LoadUsersAction } from '../../ngrx/actions/users-collection.actions';
 // interfaces
 import { User } from '../../ngrx/Models/user.interface';
 
@@ -14,13 +14,17 @@ import { User } from '../../ngrx/Models/user.interface';
   styleUrls: ['./user-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UserListComponent {
+export class UserListComponent implements OnInit {
 
   users$: Observable<User[]> = this.store.pipe(select(fromUserCollection.getUserCollection));
   loading$: Observable<boolean> = this.store.pipe(select(fromUserCollection.getUserCollectionLoading));
   displayedColumns$: Observable<string[]> = this.store.pipe(select(fromUserCollection.getUserCollectionDisplayedColumns));
 
   constructor(private store: Store<any>) { }
+
+  ngOnInit() {
+    this.store.dispatch(new LoadUsersAction());
+  }
 
   selectUser(user: User) {
     this.store.dispatch(new SelectUserAction(user.id));
